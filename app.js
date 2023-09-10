@@ -46,13 +46,13 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
   // relative terhadap folder views
-  res.render("index", {
+  res.render("./index", {
     title: "Halaman Utama",
   });
 });
 
 app.get("/about", (req, res) => {
-  res.render("about", {
+  res.render("./about", {
     title: "Halaman About",
     nama: "Night Mare",
   });
