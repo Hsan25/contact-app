@@ -1,20 +1,6 @@
 const fs = require("fs");
 
-// create folder data jika belum ada
-
-const dir = "./data";
-
-if (!fs.existsSync(dir)) {
-  fs.mkdirSync(dir);
-}
-
-// create file contact.json jika belum ada
-
 const path = "./data/contacts.json";
-
-if (!fs.existsSync(path)) {
-  fs.writeFileSync(path, "[]", "utf-8");
-}
 
 // ambil data contact dari json
 function loadContact() {

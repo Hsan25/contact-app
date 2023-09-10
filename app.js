@@ -131,21 +131,12 @@ app.post(
      check("email", "email tidak valid").isEmail(),
    ],
    (req, res) => {
-     //   const data = req.body;
      const errors = validationResult(req);
  
      if (!errors.isEmpty()) {
-      //  res.render("/update", {
-      //    title: "halaman ubah contact",
-      //    errors: errors.array(),
-      //  });
       res.status(404).json({errors:errors.array()});
      }else{
-      // console.log(req.body);
       editContact(req.body);
-      // res.send(req.body);
-      //   addContact(req.body);
-    
        //  kirim pesan
         req.flash('msg','data berhasil di ubah');
         res.redirect("/contact");
@@ -159,7 +150,6 @@ app.get('/contact/delete/:nama', (req, res) => {
    req.flash('msg','data berhasil di hapus');
    res.redirect('/contact');
 })
-
 
 
 // handle contact detail
