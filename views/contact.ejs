@@ -1,0 +1,63 @@
+
+<%- include('layouts/header') %>
+<div class="container">
+  <div class="row my-5 justify-content-center">
+    <div class="col-md-8">
+      <h1>Hello, <%= nama  %></h1>
+
+      <a href='/add-contact'  class="btn btn-primary">Tambah contact</a>
+    </div>
+
+    
+  </div>
+  
+  <div class="row justify-content-center">
+    
+    <div class="col-md-8">
+      <% if (msg.length !== 0) { %>
+        <div class="alert alert-success" role="alert">
+          <%= msg %>
+        </div>
+      <% } %>
+    </div>
+  </div>
+
+
+
+  
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <h1>Daftar Kontak</h1>
+      <table class="table ">
+        <thead>
+          <tr>
+            <th scope="col">No</th>
+            <th scope="col">Nama</th>
+            <th scope="col">noHP</th>
+            <th scope="col">Email</th>
+            <th scope="col">Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% contacts.forEach((contact,i) => { %>
+            <tr>
+              <th scope="row"> <%= i + 1  %></th>
+              <td> <%= contact.nama  %></td>
+              <td> <%= contact.nohp  %></td>
+              <td> <%= contact.email  %></td>
+              
+              <td>
+                <a href ="/contact/<%= contact.nama %>" class="btn btn-success badge rounded-pill">detail</a>
+                
+              </td>
+            </tr>
+          <% }) %>
+         
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<%- include('layouts/footer') %>
