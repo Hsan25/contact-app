@@ -1,12 +1,7 @@
 const express = require("express");
 const app = express();
-
 const port = 3000;
-
-//
-
 const { body, validationResult, check } = require("express-validator");
-
 const session = require("express-session");
 const cookie = require("cookie-parser");
 const flash = require("connect-flash");
@@ -17,14 +12,15 @@ const {
   addContact,
   validasiNama,
   deleteContact,
-  editContact
+  editContact,
 } = require("./contacts");
 
 // use view engine ejs
-
 app.set("view engine", "ejs");
+// app.set("views","/views");
 
-// konfigurasu flash
+
+// konfigurasi flash
 app.use(cookie("secret"));
 app.use(
   session({
@@ -59,12 +55,12 @@ app.get("/about", (req, res) => {
 });
 
 app.get("/contact", (req, res) => {
-   const contacts = loadContact();
+  const contacts = loadContact();
   res.render("contact", {
     title: "Halaman Contact",
     nama: "Night Mare",
     contacts,
-    msg: req.flash('msg')
+    msg: req.flash("msg"),
   });
 });
 
@@ -86,71 +82,67 @@ app.post(
     check("email", "email tidak valid").isEmail(),
   ],
   (req, res) => {
-    //   const data = req.body;
     const errors = validationResult(req);
-
     if (!errors.isEmpty()) {
       res.render("add-contact", {
         title: "halaman tambah contact",
         errors: errors.array(),
       });
-    }else{
-       addContact(req.body);
-   
+    } else {
+      addContact(req.body);
       //  kirim pesan
-       req.flash('msg','data berhasil di tambahkan');
-       res.redirect("/contact");
+      req.flash("msg", "data berhasil di tambahkan");
+      res.redirect("/contact");
     }
   }
 );
 
 // form ubah data
-app.get('/contact/edit/:nama',(req, res) => {
-   const contact = detailContact(req.params.nama);
-   
-   res.render('edit-contact',{
-      title: 'Halaman Ubah Data',
-      contact,
-   });
+app.get("/contact/edit/:nama", (req, res) => {
+  const contact = detailContact(req.params.nama);
+
+  res.render("edit-contact", {
+    title: "Halaman Ubah Data",
+    contact,
+  });
 });
 
 // handle edit data
 app.post(
-   "/contact/update",
-   [
-      body("nama").custom((value,{ req }) => {
-       const validasiNam = validasiNama(value);
-       //  jika gagal
-       const oldNama = req.body.oldNama;
-       if (value !== oldNama  && !validasiNam) {
-         throw new Error("nama sudah di pakai");
-       }
-       return true;
-     }),
-     check("nohp", "nohp tidak valid").isMobilePhone("id-ID"),
-     check("email", "email tidak valid").isEmail(),
-   ],
-   (req, res) => {
-     const errors = validationResult(req);
- 
-     if (!errors.isEmpty()) {
-      res.status(404).json({errors:errors.array()});
-     }else{
+  "/contact/update",
+  [
+    body("nama").custom((value, { req }) => {
+      const validasiNam = validasiNama(value);
+      //  jika gagal
+      const oldNama = req.body.oldNama;
+      if (value !== oldNama && !validasiNam) {
+        throw new Error("nama sudah di pakai");
+      }
+      return true;
+    }),
+    check("nohp", "nohp tidak valid").isMobilePhone("id-ID"),
+    check("email", "email tidak valid").isEmail(),
+  ],
+  (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      res.status(404).json({ errors: errors.array() });
+    } else {
       editContact(req.body);
-       //  kirim pesan
-        req.flash('msg','data berhasil di ubah');
-        res.redirect("/contact");
-     }
-   }
- );
+      //  kirim pesan
+      req.flash("msg", "data berhasil di ubah");
+      res.redirect("/contact");
+    }
+  }
+);
 
 // handle delete contact
-app.get('/contact/delete/:nama', (req, res) => {
-   deleteContact(req.params.nama);
-   req.flash('msg','data berhasil di hapus');
-   res.redirect('/contact');
-})
-
+app.get("/contact/delete/:nama", (req, res) => {
+  deleteContact(req.params.nama);
+  req.flash("msg", "data berhasil di hapus");
+  res.redirect("/contact");
+});
 
 // handle contact detail
 app.get("/contact/:nama", (req, res) => {

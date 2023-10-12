@@ -59,7 +59,6 @@ function deleteContact(nama) {
   const valid = contacts.filter(
     (e) => e.nama.toLowerCase() !== nama.toLowerCase()
   );
-  //   console.log(valid);
   saveData(valid);
 }
 
