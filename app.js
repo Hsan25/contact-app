@@ -5,6 +5,7 @@ const { body, validationResult, check } = require("express-validator");
 const session = require("express-session");
 const cookie = require("cookie-parser");
 const flash = require("connect-flash");
+const path = require("path");
 
 const {
   loadContact,
@@ -17,8 +18,8 @@ const {
 
 // use view engine ejs
 app.set("view engine", "ejs");
-// app.set("views","/views");
-
+// app.set("views", path.join(__dirname + "/views"));
+app.set("views", "views");
 
 // konfigurasi flash
 app.use(cookie("secret"));
@@ -32,25 +33,21 @@ app.use(
 );
 app.use(flash());
 
-// secara default express melindungi file static(yang ada di root)
-// perintah ini berfungsi agar file tersebut dapat di akses oleh
-// siapa saja..
-
 app.use(express.static("public"));
 
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 
 app.get("/", (req, res) => {
   // relative terhadap folder views
-  res.render("./index", {
+  res.render("index", {
     title: "Halaman Utama",
   });
 });
 
 app.get("/about", (req, res) => {
-  res.render("./about", {
+  res.render("about", {
     title: "Halaman About",
-    nama: "Night Mare",
+    nama: "Admin",
   });
 });
 
@@ -99,7 +96,10 @@ app.post(
 
 // form ubah data
 app.get("/contact/edit/:nama", (req, res) => {
-  const contact = detailContact(req.params.nama);
+  const { name } = req.params;
+  if (!nama) return res.sendStatus(400);
+  const contact = detailContact(nama);
+  if (!contact) return res.send(`contact ${nama} tidak di temukan.`);
 
   res.render("edit-contact", {
     title: "Halaman Ubah Data",
@@ -139,6 +139,7 @@ app.post(
 
 // handle delete contact
 app.get("/contact/delete/:nama", (req, res) => {
+  if (!req.params.nama) return res.sendStatus(400);
   deleteContact(req.params.nama);
   req.flash("msg", "data berhasil di hapus");
   res.redirect("/contact");
@@ -146,7 +147,10 @@ app.get("/contact/delete/:nama", (req, res) => {
 
 // handle contact detail
 app.get("/contact/:nama", (req, res) => {
-  const contact = detailContact(req.params.nama);
+  const { nama } = req.params;
+  if (!nama) return res.sendStatus(400);
+  const contact = detailContact(nama);
+  if (!contact) return res.send(`contact ${nama} tidak di temukan.`);
   res.render("detail", {
     title: "Halaman Detail Contact",
     contact,
@@ -160,6 +164,7 @@ app.get("/add-contact", (req, res) => {
   });
 });
 
+// not Found URL
 app.use((req, res) => {
   res.status(404);
   res.end("<h1>404</h1>");

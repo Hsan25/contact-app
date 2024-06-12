@@ -1,5 +1,5 @@
 <%- include('layouts/header') %>
-<div class="container justify-content-center">
+<div class="container d-flex justify-content-center">
   <div class="row my-5">
     <div class="col">
       <div class="card" style="width: 18rem">
@@ -8,19 +8,15 @@
           <li class="list-group-item">noHP: <%= contact.nohp %></li>
           <li class="list-group-item">email: <%= contact.email %></li>
 
-          <a href="/contact/edit/<%= contact.nama %>" class="btn btn-info badge"
-            >edit</a
-          >
+          <a href="/contact/edit/<%= contact.nama %>" class="btn btn-info badge">edit</a>
           <a
             href="/contact/delete/<%= contact.nama %>"
             class="btn btn-danger badge mt-1"
-            onclick = "return confirm('yakin?')"
+            onclick="return confirm(`yakin ingin menghapus contact <%= contact.nama %> ?`)"
             >hapus</a
           >
 
-          <a href="/contact" class="card-link d-block mt-3"
-            >Kembali ke Daftar contact</a
-          >
+          <a href="/contact" class="card-link d-block mt-3">Kembali ke Daftar contact</a>
         </ul>
       </div>
     </div>

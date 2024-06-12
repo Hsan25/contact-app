@@ -1,34 +1,25 @@
-
 <%- include('layouts/header') %>
 <div class="container">
   <div class="row my-5 justify-content-center">
     <div class="col-md-8">
-      <h1>Hello, <%= nama  %></h1>
+      <h1>Hello, <%= nama %></h1>
 
-      <a href='/add-contact'  class="btn btn-primary">Tambah contact</a>
+      <a href="/add-contact" class="btn btn-primary">Tambah contact</a>
     </div>
-
-    
   </div>
-  
+
   <div class="row justify-content-center">
-    
     <div class="col-md-8">
       <% if (msg.length !== 0) { %>
-        <div class="alert alert-success" role="alert">
-          <%= msg %>
-        </div>
+      <div class="alert alert-success" role="alert"><%= msg %></div>
       <% } %>
     </div>
   </div>
 
-
-
-  
   <div class="row justify-content-center">
     <div class="col-md-8">
       <h1>Daftar Kontak</h1>
-      <table class="table ">
+      <table class="table">
         <thead>
           <tr>
             <th scope="col">No</th>
@@ -40,20 +31,25 @@
         </thead>
         <tbody>
           <% contacts.forEach((contact,i) => { %>
-            <tr>
-              <th scope="row"> <%= i + 1  %></th>
-              <td> <%= contact.nama  %></td>
-              <td> <%= contact.nohp  %></td>
-              <td> <%= contact.email  %></td>
-              
-              <td>
-                <a href ="/contact/<%= contact.nama %>" class="btn btn-success badge rounded-pill">detail</a>
-                
-              </td>
-            </tr>
+          <tr>
+            <th scope="row"><%= i + 1 %></th>
+            <td><%= contact.nama %></td>
+            <td><%= contact.nohp %></td>
+            <td><%= contact.email %></td>
+
+            <td>
+              <a href="/contact/<%= contact.nama %>" class="btn btn-success badge rounded-pill"
+                >detail</a
+              >
+              <a
+                href="/contact/delete/<%= contact.nama %>"
+                onclick="return confirm(`yakin ingin menghapus contact <%= contact.nama %> ?`)"
+                class="btn btn-danger badge rounded-pill">
+                Delete
+              </a>
+            </td>
+          </tr>
           <% }) %>
-         
-          
         </tbody>
       </table>
     </div>

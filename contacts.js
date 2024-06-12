@@ -20,13 +20,11 @@ function detailContact(nama) {
 
   return valid;
 }
-
 // save data
 
 function saveData(data) {
   fs.writeFileSync(path, JSON.stringify(data), "utf-8");
 }
-
 // add contact
 
 function addContact(data) {
